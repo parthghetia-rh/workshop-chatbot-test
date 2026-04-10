@@ -2,10 +2,12 @@ schemaVersion: 2.2.0
 metadata:
   name: AI-MaaS-Workshop
 components:
-  # 1. Install the Continue.dev VS Code Extension
+  # 1. Install Continue directly via its VSIX download link
   - name: continue-ai-assistant
-    type: chePlugin
-    id: Continue.continue/latest
+    type: vscode-plugin
+    endpoints: []
+    extensions:
+      - https://open-vsx.org/api/Continue/continue/linux-x64/0.8.21/file/Continue.continue-0.8.21@linux-x64.vsix
 
   # 2. Provision the Python Developer Environment
   - name: python-env
@@ -13,17 +15,15 @@ components:
       image: registry.access.redhat.com/ubi9/python-311:latest
       memoryLimit: 2G
       env:
-        # The internal HTTPS endpoint
         - name: OPENAI_BASE_URL
           value: "https://workshop-maas-model.workshop-maas.svc.cluster.local/v1"
         - name: OPENAI_API_KEY
           value: "dummy-workshop-key"
-        # CRITICAL: Tells the Continue extension to ignore the OpenShift self-signed cert
         - name: NODE_TLS_REJECT_UNAUTHORIZED
           value: "0"
       command: ['tail', '-f', '/dev/null']
 
-# 3. Automatically run the setup script when the workspace boots
+# 3. Automatically run the setup script for Python requirements
 commands:
   - id: init-workspace
     exec:
