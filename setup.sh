@@ -4,10 +4,14 @@ echo "Setting up workspace..."
 # 1. Install Python dependencies
 pip install -r requirements.txt
 
-# 2. Create the Continue.dev configuration directory
+# 2. Download the extension file as a bulletproof backup
+echo "Downloading Continue extension backup..."
+wget -q -nc https://open-vsx.org/api/Continue/continue/linux-x64/0.8.21/file/Continue.continue-0.8.21@linux-x64.vsix -O continue-offline.vsix
+
+# 3. Create the Continue.dev configuration directory
 mkdir -p ~/.continue
 
-# 3. Inject the configuration file for the AI side-chat
+# 4. Inject the configuration file to point to your internal GPU pod
 cat <<EOF > ~/.continue/config.json
 {
   "models": [

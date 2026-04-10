@@ -2,14 +2,6 @@ schemaVersion: 2.2.0
 metadata:
   name: AI-MaaS-Workshop
 components:
-  # 1. Install Continue directly via its VSIX download link
-  - name: continue-ai-assistant
-    type: vscode-plugin
-    endpoints: []
-    extensions:
-      - https://open-vsx.org/api/Continue/continue/linux-x64/0.8.21/file/Continue.continue-0.8.21@linux-x64.vsix
-
-  # 2. Provision the Python Developer Environment
   - name: python-env
     container:
       image: registry.access.redhat.com/ubi9/python-311:latest
@@ -23,7 +15,6 @@ components:
           value: "0"
       command: ['tail', '-f', '/dev/null']
 
-# 3. Automatically run the setup script for Python requirements
 commands:
   - id: init-workspace
     exec:
@@ -34,3 +25,12 @@ commands:
 events:
   postStart:
     - init-workspace
+
+# The official OpenShift Dev Spaces way to auto-install extensions
+attributes:
+  .vscode/extensions.json: |
+    {
+      "recommendations": [
+        "Continue.continue"
+      ]
+    }
