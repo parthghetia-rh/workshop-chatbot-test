@@ -4,9 +4,9 @@ echo "Setting up workspace..."
 # 1. Install Python dependencies
 pip install -r requirements.txt
 
-# 2. Download the extension file as a bulletproof backup
-echo "Downloading Continue extension backup..."
-wget -q -nc https://open-vsx.org/api/Continue/continue/linux-x64/0.8.21/file/Continue.continue-0.8.21@linux-x64.vsix -O continue-offline.vsix
+# 2. Download the latest stable Continue extension (v1.2.22) directly from GitHub Releases
+echo "Downloading the latest Continue extension backup..."
+wget -q -nc https://github.com/continuedev/continue/releases/download/v1.2.22-vscode/continue-linux-x64-1.2.22.vsix -O continue-offline.vsix
 
 # 3. Create the Continue.dev configuration directory
 mkdir -p ~/.continue
