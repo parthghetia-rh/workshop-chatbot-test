@@ -5,7 +5,7 @@ components:
   # Instructs the Dev Spaces editor to download and install the extension directly
   - name: continue-ai
     type: chePlugin
-    id: Continue.continue/latest
+    id: continue.continue/latest
     # If your cluster cannot reach open-vsx.org, uncomment the two lines below 
     # to force it to download directly from the GitHub release URL
     # extensions:
