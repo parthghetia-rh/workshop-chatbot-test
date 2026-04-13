@@ -20,7 +20,7 @@ cat <<EOF > ~/.continue/config.json
       "provider": "openai",
       "model": "granite-8b-code-instruct",
       "apiBase": "https://granite-8b-code-instruct.workshop-maas.svc.cluster.local/v1",
-      "apiKey": "dummy-key"
+      "apiKey": "dummy-key",
       "contextLength": 4096,
       "completionOptions": {
         "maxTokens": 1024
@@ -32,7 +32,7 @@ cat <<EOF > ~/.continue/config.json
     "provider": "openai",
     "model": "granite-8b-code-instruct",
     "apiBase": "https://granite-8b-code-instruct.workshop-maas.svc.cluster.local/v1",
-    "apiKey": "dummy-key"
+    "apiKey": "dummy-key",
     "contextLength": 4096,
     "completionOptions": {
       "maxTokens": 256
