@@ -13,24 +13,8 @@ components:
           value: "dummy-workshop-key"
         - name: NODE_TLS_REJECT_UNAUTHORIZED
           value: "0"
-      mountSources: true
-      # 1. We map the VS Code extension folder and Continue config to persistent volumes
-      volumeMounts:
-        - name: vscode-extensions
-          path: /home/user/.vscode/extensions
-        - name: continue-config
-          path: /home/user/.continue
       command: ['tail', '-f', '/dev/null']
 
-  # 2. We declare the physical persistent volumes so they survive workspace restarts
-  - name: vscode-extensions
-    volume:
-      size: 1Gi
-  - name: continue-config
-    volume:
-      size: 1Gi
-
-# 3. We run our setup.sh script to handle python dependencies and the config injection
 commands:
   - id: init-workspace
     exec:
@@ -42,7 +26,7 @@ events:
   postStart:
     - init-workspace
 
-# 4. We use the official VS Code mechanism to prompt the user to install the extension
+# The official OpenShift Dev Spaces way to auto-install extensions
 attributes:
   .vscode/extensions.json: |
     {
