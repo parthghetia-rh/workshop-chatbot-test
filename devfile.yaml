@@ -31,6 +31,6 @@ attributes:
   .vscode/extensions.json: |
     {
       "recommendations": [
-        "continue.continue"
+        "Continue.continue"
       ]
     }
