@@ -2,13 +2,23 @@ schemaVersion: 2.2.0
 metadata:
   name: AI-MaaS-Workshop
 components:
+  # Instructs the Dev Spaces editor to download and install the extension directly
+  - name: continue-ai
+    type: chePlugin
+    id: Continue.continue/latest
+    # If your cluster cannot reach open-vsx.org, uncomment the two lines below 
+    # to force it to download directly from the GitHub release URL
+    # extensions:
+    #   - https://github.com/continuedev/continue/releases/download/v1.2.22-vscode/continue-linux-x64-1.2.22.vsix
+
+  # Your Python development environment
   - name: python-env
     container:
       image: registry.access.redhat.com/ubi9/python-311:latest
       memoryLimit: 2G
       env:
         - name: OPENAI_BASE_URL
-          value: "https://workshop-maas-model.workshop-maas.svc.cluster.local/v1"
+          value: "https://granite-8b-code-instruct.workshop-maas.svc.cluster.local/v1"
         - name: OPENAI_API_KEY
           value: "dummy-workshop-key"
         - name: NODE_TLS_REJECT_UNAUTHORIZED
@@ -25,12 +35,3 @@ commands:
 events:
   postStart:
     - init-workspace
-
-# The official OpenShift Dev Spaces way to auto-install extensions
-attributes:
-  .vscode/extensions.json: |
-    {
-      "recommendations": [
-        "Continue.continue"
-      ]
-    }

@@ -18,17 +18,25 @@ cat <<EOF > ~/.continue/config.json
     {
       "title": "Workshop Private GPU",
       "provider": "openai",
-      "model": "workshop-maas-model",
-      "apiBase": "https://workshop-maas-model.workshop-maas.svc.cluster.local/v1",
+      "model": "granite-8b-code-instruct",
+      "apiBase": "https://granite-8b-code-instruct.workshop-maas.svc.cluster.local/v1",
       "apiKey": "dummy-key"
+      "contextLength": 4096,
+      "completionOptions": {
+        "maxTokens": 1024
+      }
     }
   ],
   "tabAutocompleteModel": {
     "title": "Workshop Autocomplete",
     "provider": "openai",
-    "model": "workshop-maas-model",
-    "apiBase": "https://workshop-maas-model.workshop-maas.svc.cluster.local/v1",
+    "model": "granite-8b-code-instruct",
+    "apiBase": "https://granite-8b-code-instruct.workshop-maas.svc.cluster.local/v1",
     "apiKey": "dummy-key"
+    "contextLength": 4096,
+    "completionOptions": {
+      "maxTokens": 256
+    }
   },
   "allowAnonymousTelemetry": false
 }
