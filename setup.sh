@@ -16,7 +16,7 @@ cat <<EOF > ~/.continue/config.json
 {
   "models": [
     {
-      "title": "Workshop Private GPU",
+      "title": "granite-8b-code-instruct",
       "provider": "openai",
       "model": "granite-8b-code-instruct",
       "apiBase": "https://granite-8b-code-instruct.workshop-maas.svc.cluster.local/v1",

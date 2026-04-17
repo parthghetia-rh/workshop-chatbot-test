@@ -5,8 +5,8 @@ import httpx
 from rich.console import Console
 from rich.markdown import Markdown
 from rich.panel import Panel
-from rich.live import Live
 
+# Initialize the rich console for beautiful terminal UI
 console = Console()
 
 # Suppress the "InsecureRequestWarning" for the self-signed cluster certificate
@@ -22,6 +22,7 @@ client = OpenAI(
     http_client=custom_http_client
 )
 
+# 1. DYNAMICALLY FETCH AND PRINT THE MODEL
 try:
     available_models = client.models.list()
     MODEL_NAME = available_models.data[0].id
@@ -32,14 +33,20 @@ except Exception as e:
     console.print(f"[bold red]❌ Failed to connect to the model server.[/bold red]\nError: {e}")
     exit(1)
 
-welcome_msg = "**Type your message below.** Type `exit` or `quit` to end the session."
+# Display a nice welcome banner
+welcome_msg = """
+**Type your message below.** Type `exit` or `quit` to end the session.
+"""
 console.print(Panel(Markdown(welcome_msg), title="🚀 OpenShift AI Terminal Chatbot", border_style="blue"))
 
+# 2. INITIALIZE CHAT HISTORY
 chat_history = [
     {"role": "system", "content": "You are a helpful, expert software engineering assistant. Keep your answers clear, accurate, and concise. Format code blocks using markdown."}
 ]
 
+# 3. THE CHATBOT LOOP
 while True:
+    # Get user input with a colored prompt
     user_input = console.input("\n[bold green]You:[/bold green] ")
     
     if user_input.lower() in ['exit', 'quit']:
@@ -49,21 +56,18 @@ while True:
     chat_history.append({"role": "user", "content": user_input})
     
     try:
-        response = client.chat.completions.create(
-            model=MODEL_NAME,
-            messages=chat_history,
-            max_tokens=500,
-            temperature=0.7,
-            stream=True
-        )
+        # Display a spinning animation while waiting for the model
+        with console.status("[bold cyan]GPU is thinking...[/bold cyan]", spinner="dots"):
+            response = client.chat.completions.create(
+                model=MODEL_NAME,
+                messages=chat_history,
+                max_tokens=500,
+                temperature=0.7
+            )
+            bot_reply = response.choices[0].message.content
         
-        bot_reply = ""
-        
-        with Live(Panel(Markdown(bot_reply), title="[bold purple]AI Assistant[/bold purple]", border_style="purple"), console=console, refresh_per_second=15) as live:
-            for chunk in response:
-                if chunk.choices[0].delta.content is not None:
-                    bot_reply += chunk.choices[0].delta.content
-                    live.update(Panel(Markdown(bot_reply), title="[bold purple]AI Assistant[/bold purple]", border_style="purple"))
+        # Print the AI's response inside a neat panel, rendering any Markdown/Code
+        console.print(Panel(Markdown(bot_reply), title="[bold purple]AI Assistant[/bold purple]", border_style="purple"))
         
         chat_history.append({"role": "assistant", "content": bot_reply})
         
