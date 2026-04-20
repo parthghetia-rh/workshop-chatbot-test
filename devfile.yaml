@@ -2,10 +2,15 @@ schemaVersion: 2.2.0
 metadata:
   name: AI-MaaS-Workshop
 components:
-  - name: python-env
+  - name: dev-tools
     container:
-      image: registry.access.redhat.com/ubi9/python-311:latest
-      memoryLimit: 2G
+      image: quay.io/devfile/universal-developer-image:latest
+      memoryLimit: 4G
+      memoryRequest: 2G
+      cpuLimit: 2000m
+      cpuRequest: 500m
+      mountSources: true
+      sourceMapping: /projects
       env:
         - name: OPENAI_BASE_URL
           value: "https://granite-8b-code-instruct.workshop-maas.svc.cluster.local/v1"
@@ -16,21 +21,47 @@ components:
       command: ['tail', '-f', '/dev/null']
 
 commands:
+  - id: install-python-reqs
+    exec:
+      component: dev-tools
+      commandLine: "pip install -r requirements.txt"
+      workingDir: ${PROJECT_SOURCE}
+
   - id: init-workspace
     exec:
-      component: python-env
+      component: dev-tools
       commandLine: "bash setup.sh"
       workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: build
+        isDefault: true
+
+  - id: compile-java-agent
+    exec:
+      component: dev-tools
+      commandLine: "javac JavaChatAgent.java"
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: build
+
+  - id: run-java-agent
+    exec:
+      component: dev-tools
+      commandLine: "java JavaChatAgent"
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: run
 
 events:
   postStart:
+    - install-python-reqs
     - init-workspace
 
-# The official OpenShift Dev Spaces way to auto-install extensions
 attributes:
   .vscode/extensions.json: |
     {
       "recommendations": [
-        "Continue.continue"
+        "Continue.continue",
+        "vscjava.vscode-java-pack"
       ]
     }
