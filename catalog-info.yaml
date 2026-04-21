@@ -1,18 +1,19 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: openshift-ai-workshop
-  title: OpenShift AI Chatbot Workshop
+  name: openshift-ai-maas-workshop
+  title: OpenShift AI Models-as-a-Service Workshop
   description: A 20-minute Python lab connecting to a private Granite LLM on OpenShift AI.
   tags:
     - python
     - ai
     - workshop
-  links:
-    - url: https://devspaces.apps.<your-cluster-domain>.com/#https://github.com/parthghetia-rh/workshop-chatbot-test
-      title: 🚀 Open in Dev Spaces
-      icon: web
+  # links:
+  #   - url: https://<openshift-cluster>/#<hosted-git-repo>
+  #     title: 🚀 Open in Dev Spaces
+  #     icon: web
 spec:
-  type: service
-  lifecycle: experimental
-  owner: user:guest
+  type: module
+  lifecycle: production
+  owner: group:default/workshop-admins
+  subcomponentOf: component:default/workshop-repository
